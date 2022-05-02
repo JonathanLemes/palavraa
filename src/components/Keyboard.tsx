@@ -28,7 +28,6 @@ export default function Keyboard({ setLetter }: KeyboardProps) {
       templateColumns="repeat(12, 1fr)"
       templateRows="repeat(3, 1fr)"
       height="250px"
-      width="100%"
     >
       {keyBoardLetter('Q')}
       {keyBoardLetter('W')}
