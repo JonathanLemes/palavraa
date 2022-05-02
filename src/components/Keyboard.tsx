@@ -15,7 +15,6 @@ export default function Keyboard({ setLetter }: KeyboardProps) {
           fontWeight="bold"
           fontSize="3xl"
           height="64px"
-          minWidth="64px"
           onClick={() => setLetter(letter)}
         >
           {letter}

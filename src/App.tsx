@@ -254,7 +254,8 @@ function App() {
         }
         key={index}
         m="8px"
-        height="80px"
+        height="64px"
+        width="64px"
       >
         <Text
           display="flex"
@@ -296,15 +297,22 @@ function App() {
       width="100vw"
       height="100vh"
     >
-      <Flex flexDirection="column" width="720px">
+      <Flex flexDirection="column" height="100vh" maxWidth="720px" width="100%">
         <Flex height="120px"></Flex>
-        <SimpleGrid columns={5} mx="120px" height="calc(100vh - 370px)">
-          {firstWord.map((letter, index) => letterBox(letter, index, 0))}
-          {secondWord.map((letter, index) => letterBox(letter, index, 1))}
-          {thirdWord.map((letter, index) => letterBox(letter, index, 2))}
-          {fourthWord.map((letter, index) => letterBox(letter, index, 3))}
-          {fifthWord.map((letter, index) => letterBox(letter, index, 4))}
-        </SimpleGrid>
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          height="calc(100vh - 370px)"
+          minWidth="480px"
+        >
+          <SimpleGrid width="max(480px, 70%)" columns={5} maxHeight="380px">
+            {firstWord.map((letter, index) => letterBox(letter, index, 0))}
+            {secondWord.map((letter, index) => letterBox(letter, index, 1))}
+            {thirdWord.map((letter, index) => letterBox(letter, index, 2))}
+            {fourthWord.map((letter, index) => letterBox(letter, index, 3))}
+            {fifthWord.map((letter, index) => letterBox(letter, index, 4))}
+          </SimpleGrid>
+        </Flex>
         <Keyboard setLetter={setLetter} />
       </Flex>
     </Flex>
