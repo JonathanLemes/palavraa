@@ -7,21 +7,38 @@ import Keyboard from './components/Keyboard'
 import { words as fiveLetterWords } from './constants/words'
 
 interface Word {
-  [selectedWord: number]: string[]
+  [selectedWord: number]: Letter[]
 }
 interface SetWord {
-  [selectedWord: number]: (letters: string[]) => void
+  [selectedWord: number]: (letters: Letter[]) => void
 }
+
+interface Letter {
+  content: string
+  position: number
+}
+
+const letterInitialState = {
+  content: '',
+  position: -1,
+}
+const wordInitialState = [
+  letterInitialState,
+  letterInitialState,
+  letterInitialState,
+  letterInitialState,
+  letterInitialState,
+]
 
 function App() {
   const [currentWord, setCurrentWord] = useState<string>('')
   const [selectedLetter, setSelectedLetter] = useState<number>(0)
   const [selectedWord, setSelectedWord] = useState<number>(0)
-  const [firstWord, setFirstWord] = useState<string[]>(['', '', '', '', ''])
-  const [secondWord, setSecondWord] = useState<string[]>(['', '', '', '', ''])
-  const [thirdWord, setThirdWord] = useState<string[]>(['', '', '', '', ''])
-  const [fourthWord, setFourthWord] = useState<string[]>(['', '', '', '', ''])
-  const [fifthWord, setFifthWord] = useState<string[]>(['', '', '', '', ''])
+  const [firstWord, setFirstWord] = useState<Letter[]>(wordInitialState)
+  const [secondWord, setSecondWord] = useState<Letter[]>(wordInitialState)
+  const [thirdWord, setThirdWord] = useState<Letter[]>(wordInitialState)
+  const [fourthWord, setFourthWord] = useState<Letter[]>(wordInitialState)
+  const [fifthWord, setFifthWord] = useState<Letter[]>(wordInitialState)
 
   const toast = useToast()
 
@@ -43,19 +60,22 @@ function App() {
 
   const removeLetter = () => {
     if (selectedLetter > 0) {
-      const currentWord = words[selectedWord]
-      currentWord[selectedLetter - 1] = ''
-      setWords[selectedWord](currentWord)
+      const typedWord = words[selectedWord]
+      typedWord[selectedLetter - 1].content = ''
+      setWords[selectedWord](typedWord)
       setSelectedLetter(selectedLetter - 1)
     }
   }
 
   const enterWord = () => {
     if (selectedLetter > 4 && selectedWord < 4) {
+      const wordContent = words[selectedWord].map((letter) => {
+        return letter.content
+      })
       const normalizedWord = currentWord
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
-      if (words[selectedWord].join('') === normalizedWord) {
+      if (wordContent.join('') === normalizedWord) {
         toast({
           title: 'Palavra correta!',
           description: 'Atualize a página para jogar com uma palavra nova',
@@ -64,7 +84,7 @@ function App() {
         })
       } else if (
         !fiveLetterWords.some(
-          (word) => word.toUpperCase() === words[selectedWord].join('')
+          (word) => word.toUpperCase() === wordContent.join('')
         )
       ) {
         toast({
@@ -100,9 +120,20 @@ function App() {
       if (key === 'BKSPC' || key === 'BACKSPACE') return removeLetter()
       if (key === 'ENTER') return enterWord()
       if (selectedLetter > 4) return
-      const currentWord = words[selectedWord]
-      currentWord[selectedLetter] = key
-      setWords[selectedWord](currentWord)
+      const typedWord = words[selectedWord]
+      const newWord = typedWord.map((letter, index) => {
+        if (index < selectedLetter) return letter
+        if (index === selectedLetter)
+          return {
+            content: key,
+            position: -1,
+          }
+        return {
+          content: '',
+          position: -1,
+        }
+      })
+      setWords[selectedWord](newWord)
       if (selectedLetter <= 4) setSelectedLetter(selectedLetter + 1)
     },
     [selectedLetter, selectedWord]
@@ -121,7 +152,7 @@ function App() {
     [selectedLetter, selectedWord]
   )
 
-  const letterBox = (letter: string, index: number, word: number) => {
+  const letterBox = (letter: Letter, index: number, word: number) => {
     return (
       <Box
         border="solid rgba(0, 0, 0, 0.4) 6px"
@@ -143,7 +174,7 @@ function App() {
           fontSize="4xl"
           textAlign="center"
         >
-          {letter}
+          {letter.content}
         </Text>
       </Box>
     )
