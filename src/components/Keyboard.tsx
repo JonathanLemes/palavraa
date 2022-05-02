@@ -7,14 +7,14 @@ interface KeyboardProps {
 export default function Keyboard({ setLetter }: KeyboardProps) {
   const keyBoardLetter = (letter: string, colSpan?: number) => {
     return (
-      <GridItem height="48px" colSpan={colSpan || 1}>
+      <GridItem colSpan={colSpan || 1}>
         <Button
           variant="outline"
           colorScheme="gray"
           color="white"
           fontWeight="bold"
           fontSize="xl"
-          height="38px"
+          marginBottom="4px"
           onClick={() => setLetter(letter)}
         >
           {letter}
@@ -24,7 +24,11 @@ export default function Keyboard({ setLetter }: KeyboardProps) {
   }
 
   return (
-    <Grid templateColumns="repeat(12, 1fr)" templateRows="repeat(3, 1fr)">
+    <Grid
+      gap={2}
+      templateColumns="repeat(12, 1fr)"
+      templateRows="repeat(3, 1fr)"
+    >
       {keyBoardLetter('Q')}
       {keyBoardLetter('W')}
       {keyBoardLetter('E')}
