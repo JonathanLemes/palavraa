@@ -7,14 +7,14 @@ interface KeyboardProps {
 export default function Keyboard({ setLetter }: KeyboardProps) {
   const keyBoardLetter = (letter: string, colSpan?: number) => {
     return (
-      <GridItem colSpan={colSpan || 1}>
+      <GridItem height="48px" colSpan={colSpan || 1}>
         <Button
           variant="outline"
           colorScheme="gray"
           color="white"
           fontWeight="bold"
           fontSize="3xl"
-          height="64px"
+          height="48px"
           onClick={() => setLetter(letter)}
         >
           {letter}
@@ -25,8 +25,7 @@ export default function Keyboard({ setLetter }: KeyboardProps) {
 
   return (
     <Grid
-      gap={2}
-      templateColumns="repeat(10, 1fr)"
+      templateColumns="repeat(12, 1fr)"
       templateRows="repeat(3, 1fr)"
       height="250px"
       width="100%"
@@ -41,6 +40,8 @@ export default function Keyboard({ setLetter }: KeyboardProps) {
       {keyBoardLetter('I')}
       {keyBoardLetter('O')}
       {keyBoardLetter('P')}
+      <GridItem />
+      <GridItem />
       {keyBoardLetter('A')}
       {keyBoardLetter('S')}
       {keyBoardLetter('D')}
@@ -50,7 +51,7 @@ export default function Keyboard({ setLetter }: KeyboardProps) {
       {keyBoardLetter('J')}
       {keyBoardLetter('K')}
       {keyBoardLetter('L')}
-      {keyBoardLetter('BKSPC')}
+      {keyBoardLetter('BKSPC', 3)}
       {keyBoardLetter('Z')}
       {keyBoardLetter('X')}
       {keyBoardLetter('C')}
@@ -58,7 +59,7 @@ export default function Keyboard({ setLetter }: KeyboardProps) {
       {keyBoardLetter('B')}
       {keyBoardLetter('N')}
       {keyBoardLetter('M')}
-      {keyBoardLetter('ENTER', 2)}
+      {keyBoardLetter('ENTER', 3)}
     </Grid>
   )
 }

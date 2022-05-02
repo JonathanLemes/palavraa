@@ -303,9 +303,9 @@ function App() {
           justifyContent="center"
           alignItems="center"
           height="calc(100vh - 370px)"
-          minWidth="480px"
+          minWidth="320px"
         >
-          <SimpleGrid width="max(480px, 70%)" columns={5} maxHeight="380px">
+          <SimpleGrid width="max(320px, 70%)" columns={5} maxHeight="380px">
             {firstWord.map((letter, index) => letterBox(letter, index, 0))}
             {secondWord.map((letter, index) => letterBox(letter, index, 1))}
             {thirdWord.map((letter, index) => letterBox(letter, index, 2))}
