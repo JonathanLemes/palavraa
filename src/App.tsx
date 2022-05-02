@@ -10,6 +10,8 @@ import {
   GridItem,
 } from '@chakra-ui/react'
 
+import { words as fiveLetterWords } from './constants/words'
+
 interface Word {
   [selectedWord: number]: string[]
 }
@@ -18,6 +20,7 @@ interface SetWord {
 }
 
 function App() {
+  const [currentWord, setCurrentWord] = useState<string>('')
   const [selectedLetter, setSelectedLetter] = useState<number>(0)
   const [selectedWord, setSelectedWord] = useState<number>(0)
   const [firstWord, setFirstWord] = useState<string[]>(['', '', '', '', ''])
@@ -53,8 +56,12 @@ function App() {
 
   const enterWord = () => {
     if (selectedLetter > 4 && selectedWord <= 4) {
-      setSelectedWord(selectedWord + 1)
-      setSelectedLetter(0)
+      if (words[selectedWord].join('') === currentWord.toUpperCase()) {
+        // Palavra correta
+      } else {
+        setSelectedWord(selectedWord + 1)
+        setSelectedLetter(0)
+      }
     }
   }
 
@@ -136,6 +143,14 @@ function App() {
 
     return () => document.removeEventListener('keydown', onKeyPress, false)
   }, [selectedLetter])
+
+  useEffect(() => {
+    if (currentWord === '') {
+      const randomWord =
+        fiveLetterWords[Math.floor(Math.random() * fiveLetterWords.length)]
+      setCurrentWord(randomWord)
+    }
+  }, [currentWord])
 
   return (
     <Flex
