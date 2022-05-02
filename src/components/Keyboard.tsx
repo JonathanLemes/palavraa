@@ -13,7 +13,6 @@ export default function Keyboard({ setLetter }: KeyboardProps) {
           colorScheme="gray"
           color="white"
           fontWeight="bold"
-          fontSize="xl"
           marginBottom="4px"
           onClick={() => setLetter(letter)}
         >
