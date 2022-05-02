@@ -149,6 +149,13 @@ function App() {
         .replace(/[\u0300-\u036f]/g, '')
 
       if (wordContent.join('') === normalizedWord) {
+        const newWord = words[selectedWord].map((letter) => {
+          return {
+            ...letter,
+            place: 1,
+          }
+        })
+        setWords[selectedWord](newWord)
         toast({
           title: 'Palavra correta!',
           description: 'Atualize a página para jogar com uma palavra nova',
