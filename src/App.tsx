@@ -156,12 +156,8 @@ function App() {
         isClosable: true,
       })
     } else {
-      if (selectedLetter > 4 && selectedWord < 4) {
-        const normalizedWord = currentWord
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-
-        if (wordContent === normalizedWord) {
+      if (selectedLetter > 4) {
+        if (wordContent === currentWord) {
           const newWord = words[selectedWord].map((letter) => {
             return {
               ...letter,
@@ -169,10 +165,26 @@ function App() {
             }
           })
           setWords[selectedWord](newWord)
+          document.removeEventListener('keydown', onKeyPress, false)
           toast({
             title: 'Palavra correta!',
             description: 'Atualize a página para jogar com uma palavra nova',
             status: 'success',
+            isClosable: true,
+          })
+        } else if (selectedWord === 4) {
+          const newWord = words[selectedWord].map((letter) => {
+            return {
+              ...letter,
+              place: -2,
+            }
+          })
+          setWords[selectedWord](newWord)
+          document.removeEventListener('keydown', onKeyPress, false)
+          toast({
+            title: 'Você perdeu',
+            description: `A palavra correta era ${currentWord}. Atualize a página para jogar com uma palavra nova`,
+            status: 'error',
             isClosable: true,
           })
         } else {
@@ -180,13 +192,6 @@ function App() {
           setSelectedWord(selectedWord + 1)
           setSelectedLetter(0)
         }
-      } else if (selectedWord === 4 && selectedLetter > 4) {
-        toast({
-          title: 'Você perdeu',
-          description: `A palavra correta era ${currentWord}. Atualize a página para jogar com uma palavra nova`,
-          status: 'error',
-          isClosable: true,
-        })
       }
     }
   }
@@ -239,6 +244,8 @@ function App() {
             ? 'rgba(255, 255, 0, 0.3)'
             : letter.place === 1
             ? 'rgba(0, 255, 0, 0.3)'
+            : letter.place === -2
+            ? 'rgba(255, 0, 0, 0.6)'
             : 'transparent'
         }
         borderRadius="8px"
@@ -275,7 +282,10 @@ function App() {
     if (currentWord === '') {
       const randomWord =
         fiveLetterWords[Math.floor(Math.random() * fiveLetterWords.length)]
-      setCurrentWord(randomWord.toUpperCase())
+      const normalizedWord = randomWord
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+      setCurrentWord(normalizedWord.toUpperCase())
     }
   }, [currentWord])
 
