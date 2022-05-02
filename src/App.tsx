@@ -78,11 +78,18 @@ function App() {
         setSelectedWord(selectedWord + 1)
         setSelectedLetter(0)
       }
-    } else {
+    } else if (selectedWord === 4 && selectedLetter > 4) {
       toast({
         title: 'Você perdeu',
         description: `A palavra correta era ${currentWord}. Atualize a página para jogar com uma palavra nova`,
         status: 'error',
+        isClosable: true,
+      })
+    } else {
+      toast({
+        title: 'Palavra incompleta',
+        description: 'A palavra deve possuir cinco letras',
+        status: 'warning',
         isClosable: true,
       })
     }
