@@ -239,6 +239,7 @@ function App() {
     return (
       <Box
         border="solid rgba(0, 0, 0, 0.4) 6px"
+        transition="background-color 200ms linear"
         bgColor={
           letter.place === 0
             ? 'rgba(255, 255, 0, 0.3)'
