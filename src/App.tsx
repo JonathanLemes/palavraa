@@ -297,7 +297,7 @@ function App() {
       width="100vw"
       height="100vh"
     >
-      <Flex flexDirection="column" height="100vh" maxWidth="720px" width="100%">
+      <Flex flexDirection="column" height="100vh" maxWidth="720px">
         <Flex height="120px"></Flex>
         <Flex
           justifyContent="center"
