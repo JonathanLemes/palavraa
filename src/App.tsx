@@ -61,6 +61,7 @@ function App() {
   const removeLetter = () => {
     if (selectedLetter > 0) {
       const typedWord = words[selectedWord]
+
       typedWord[selectedLetter - 1].content = ''
       setWords[selectedWord](typedWord)
       setSelectedLetter(selectedLetter - 1)
@@ -75,6 +76,7 @@ function App() {
       const normalizedWord = currentWord
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
+
       if (wordContent.join('') === normalizedWord) {
         toast({
           title: 'Palavra correta!',
@@ -120,6 +122,7 @@ function App() {
       if (key === 'BKSPC' || key === 'BACKSPACE') return removeLetter()
       if (key === 'ENTER') return enterWord()
       if (selectedLetter > 4) return
+
       const typedWord = words[selectedWord]
       const newWord = typedWord.map((letter, index) => {
         if (index < selectedLetter) return letter
@@ -133,6 +136,7 @@ function App() {
           position: -1,
         }
       })
+
       setWords[selectedWord](newWord)
       if (selectedLetter <= 4) setSelectedLetter(selectedLetter + 1)
     },
