@@ -59,7 +59,10 @@ function App() {
 
   const enterWord = () => {
     if (selectedLetter > 4 && selectedWord < 4) {
-      if (words[selectedWord].join('') === currentWord) {
+      const normalizedWord = currentWord
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+      if (words[selectedWord].join('') === normalizedWord) {
         toast({
           title: 'Palavra correta!',
           description: 'Atualize a página para jogar com uma palavra nova',
