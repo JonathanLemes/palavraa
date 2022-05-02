@@ -13,8 +13,8 @@ export default function Keyboard({ setLetter }: KeyboardProps) {
           colorScheme="gray"
           color="white"
           fontWeight="bold"
-          fontSize="3xl"
-          height="48px"
+          fontSize="xl"
+          height="38px"
           onClick={() => setLetter(letter)}
         >
           {letter}
@@ -24,11 +24,7 @@ export default function Keyboard({ setLetter }: KeyboardProps) {
   }
 
   return (
-    <Grid
-      templateColumns="repeat(12, 1fr)"
-      templateRows="repeat(3, 1fr)"
-      height="250px"
-    >
+    <Grid templateColumns="repeat(12, 1fr)" templateRows="repeat(3, 1fr)">
       {keyBoardLetter('Q')}
       {keyBoardLetter('W')}
       {keyBoardLetter('E')}
