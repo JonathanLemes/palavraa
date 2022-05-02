@@ -1,15 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import './App.css'
-import {
-  Flex,
-  SimpleGrid,
-  Box,
-  Text,
-  Button,
-  Grid,
-  GridItem,
-  useToast,
-} from '@chakra-ui/react'
+import { Flex, SimpleGrid, Box, Text, useToast } from '@chakra-ui/react'
 
 import Keyboard from './components/Keyboard'
 
