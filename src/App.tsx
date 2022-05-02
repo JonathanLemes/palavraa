@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import {
@@ -11,6 +11,13 @@ import {
   GridItem,
 } from '@chakra-ui/react'
 
+interface Word {
+  [selectedWord: number]: string[]
+}
+interface SetWord {
+  [selectedWord: number]: (letters: string[]) => void
+}
+
 function App() {
   const [selectedLetter, setSelectedLetter] = useState<number>(0)
   const [selectedWord, setSelectedWord] = useState<number>(0)
@@ -19,6 +26,64 @@ function App() {
   const [thirdWord, setThirdWord] = useState<string[]>(['', '', '', '', ''])
   const [fourthWord, setFourthWord] = useState<string[]>(['', '', '', '', ''])
   const [fifthWord, setFifthWord] = useState<string[]>(['', '', '', '', ''])
+
+  const words: Word = {
+    0: firstWord,
+    1: secondWord,
+    2: thirdWord,
+    3: fourthWord,
+    4: fifthWord,
+  }
+
+  const setWords: SetWord = {
+    0: setFirstWord,
+    1: setSecondWord,
+    2: setThirdWord,
+    3: setFourthWord,
+    4: setFifthWord,
+  }
+
+  const removeLetter = () => {
+    if (selectedLetter > 0) {
+      const currentWord = words[selectedWord]
+      currentWord[selectedLetter - 1] = ''
+      setWords[selectedWord](currentWord)
+      setSelectedLetter(selectedLetter - 1)
+    }
+  }
+
+  const enterWord = () => {
+    if (selectedLetter > 4 && selectedWord <= 4) {
+      setSelectedWord(selectedWord + 1)
+      setSelectedLetter(0)
+    }
+  }
+
+  const setLetter = useCallback(
+    (key: string) => {
+      if (key === 'BKSPC' || key === 'BACKSPACE') return removeLetter()
+      if (key === 'ENTER') return enterWord()
+      if (selectedLetter > 4) return
+      const currentWord = words[selectedWord]
+      currentWord[selectedLetter] = key
+      setWords[selectedWord](currentWord)
+      if (selectedLetter <= 4) setSelectedLetter(selectedLetter + 1)
+    },
+    [selectedLetter, selectedWord]
+  )
+
+  const onKeyPress = useCallback(
+    (event: any) => {
+      if (
+        (event.keyCode >= 65 && event.keyCode <= 90) ||
+        (event.keyCode >= 97 && event.keyCode <= 122) ||
+        event.key === 'Enter' ||
+        event.key === 'Backspace'
+      )
+        setLetter(event.key.toUpperCase())
+    },
+    [selectedLetter, selectedWord]
+  )
 
   const letterBox = (letter: string, index: number, word: number) => {
     return (
@@ -59,12 +124,19 @@ function App() {
           fontSize="3xl"
           height="64px"
           minWidth="64px"
+          onClick={() => setLetter(letter)}
         >
           {letter}
         </Button>
       </GridItem>
     )
   }
+
+  useEffect(() => {
+    document.addEventListener('keydown', onKeyPress, false)
+
+    return () => document.removeEventListener('keydown', onKeyPress, false)
+  }, [selectedLetter])
 
   return (
     <Flex
