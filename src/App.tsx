@@ -8,6 +8,7 @@ import {
   Button,
   Grid,
   GridItem,
+  useToast,
 } from '@chakra-ui/react'
 
 import { words as fiveLetterWords } from './constants/words'
@@ -28,6 +29,8 @@ function App() {
   const [thirdWord, setThirdWord] = useState<string[]>(['', '', '', '', ''])
   const [fourthWord, setFourthWord] = useState<string[]>(['', '', '', '', ''])
   const [fifthWord, setFifthWord] = useState<string[]>(['', '', '', '', ''])
+
+  const toast = useToast()
 
   const words: Word = {
     0: firstWord,
@@ -55,19 +58,37 @@ function App() {
   }
 
   const enterWord = () => {
-    if (selectedLetter > 4 && selectedWord <= 4) {
-      if (words[selectedWord].join('') === currentWord.toUpperCase()) {
-        // Palavra correta
+    if (selectedLetter > 4 && selectedWord < 4) {
+      if (words[selectedWord].join('') === currentWord) {
+        toast({
+          title: 'Palavra correta!',
+          description: 'Atualize a página para jogar com uma palavra nova',
+          status: 'success',
+          isClosable: true,
+        })
       } else if (
         !fiveLetterWords.some(
           (word) => word.toUpperCase() === words[selectedWord].join('')
         )
       ) {
-        // Palavra não encontrada
+        toast({
+          title: 'Palavra não encontrada',
+          description:
+            'A palavra não foi encontrada na lista de palavras válidas',
+          status: 'warning',
+          isClosable: true,
+        })
       } else {
         setSelectedWord(selectedWord + 1)
         setSelectedLetter(0)
       }
+    } else {
+      toast({
+        title: 'Você perdeu',
+        description: `A palavra correta era ${currentWord}. Atualize a página para jogar com uma palavra nova`,
+        status: 'error',
+        isClosable: true,
+      })
     }
   }
 
@@ -154,7 +175,7 @@ function App() {
     if (currentWord === '') {
       const randomWord =
         fiveLetterWords[Math.floor(Math.random() * fiveLetterWords.length)]
-      setCurrentWord(randomWord)
+      setCurrentWord(randomWord.toUpperCase())
     }
   }, [currentWord])
 
