@@ -140,59 +140,61 @@ function App() {
   }
 
   const enterWord = () => {
-    if (selectedLetter > 4 && selectedWord < 4) {
-      const wordContent = words[selectedWord].map((letter) => {
+    const wordContent = words[selectedWord]
+      .map((letter) => {
         return letter.content
       })
-      const normalizedWord = currentWord
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-
-      if (wordContent.join('') === normalizedWord) {
-        const newWord = words[selectedWord].map((letter) => {
-          return {
-            ...letter,
-            place: 1,
-          }
-        })
-        setWords[selectedWord](newWord)
-        toast({
-          title: 'Palavra correta!',
-          description: 'Atualize a página para jogar com uma palavra nova',
-          status: 'success',
-          isClosable: true,
-        })
-      } else if (
-        !fiveLetterWords.some(
-          (word) => word.toUpperCase() === wordContent.join('')
-        )
-      ) {
-        toast({
-          title: 'Palavra não encontrada',
-          description:
-            'A palavra não foi encontrada na lista de palavras válidas',
-          status: 'warning',
-          isClosable: true,
-        })
-      } else {
-        checkLetterPosition()
-        setSelectedWord(selectedWord + 1)
-        setSelectedLetter(0)
-      }
-    } else if (selectedWord === 4 && selectedLetter > 4) {
-      toast({
-        title: 'Você perdeu',
-        description: `A palavra correta era ${currentWord}. Atualize a página para jogar com uma palavra nova`,
-        status: 'error',
-        isClosable: true,
-      })
-    } else {
-      toast({
+      .join('')
+    if (wordContent.length < 5) {
+      return toast({
         title: 'Palavra incompleta',
         description: 'A palavra deve possuir cinco letras',
         status: 'warning',
         isClosable: true,
       })
+    }
+
+    if (!fiveLetterWords.some((word) => word.toUpperCase() === wordContent)) {
+      toast({
+        title: 'Palavra não encontrada',
+        description:
+          'A palavra não foi encontrada na lista de palavras válidas',
+        status: 'warning',
+        isClosable: true,
+      })
+    } else {
+      if (selectedLetter > 4 && selectedWord < 4) {
+        const normalizedWord = currentWord
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+
+        if (wordContent === normalizedWord) {
+          const newWord = words[selectedWord].map((letter) => {
+            return {
+              ...letter,
+              place: 1,
+            }
+          })
+          setWords[selectedWord](newWord)
+          toast({
+            title: 'Palavra correta!',
+            description: 'Atualize a página para jogar com uma palavra nova',
+            status: 'success',
+            isClosable: true,
+          })
+        } else {
+          checkLetterPosition()
+          setSelectedWord(selectedWord + 1)
+          setSelectedLetter(0)
+        }
+      } else if (selectedWord === 4 && selectedLetter > 4) {
+        toast({
+          title: 'Você perdeu',
+          description: `A palavra correta era ${currentWord}. Atualize a página para jogar com uma palavra nova`,
+          status: 'error',
+          isClosable: true,
+        })
+      }
     }
   }
 
