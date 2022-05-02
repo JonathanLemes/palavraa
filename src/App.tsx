@@ -69,13 +69,11 @@ function App() {
   }
 
   const checkLetterPosition = () => {
-    console.log(currentWord)
     const typedWord = words[selectedWord]
       .map((letter) => {
         return letter.content
       })
       .join('')
-    console.log(typedWord)
 
     const newWord = words[selectedWord].map((letter, index) => {
       const indexOfLetterInCurrent = currentWord.indexOf(letter.content) // Check if letter exists in current word
@@ -114,11 +112,6 @@ function App() {
             ...letter,
             place: 1,
           }
-        console.log({
-          letter,
-          countInCurrentWord,
-          countInTypedWord,
-        })
 
         return {
           ...letter,
