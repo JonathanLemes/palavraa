@@ -15,12 +15,12 @@ interface SetWord {
 
 interface Letter {
   content: string
-  position: number
+  place: number
 }
 
 const letterInitialState = {
   content: '',
-  position: -1,
+  place: -1,
 }
 const wordInitialState = [
   letterInitialState,
@@ -68,6 +68,77 @@ function App() {
     }
   }
 
+  const checkLetterPosition = () => {
+    console.log(currentWord)
+    const typedWord = words[selectedWord]
+      .map((letter) => {
+        return letter.content
+      })
+      .join('')
+    console.log(typedWord)
+
+    const newWord = words[selectedWord].map((letter, index) => {
+      const indexOfLetterInCurrent = currentWord.indexOf(letter.content) // Check if letter exists in current word
+      const indexOfLetterInTyped = typedWord.indexOf(letter.content)
+
+      if (indexOfLetterInCurrent === -1)
+        return {
+          ...letter,
+          place: indexOfLetterInCurrent,
+        }
+
+      const countInCurrentWord = currentWord.split(letter.content).length - 1 // Check how many times the letter shows up in current word
+      const countInTypedWord = typedWord.split(letter.content).length - 1 // Check how many times the letter shows up in typed word
+
+      if (countInTypedWord > countInCurrentWord) {
+        if (indexOfLetterInTyped === index) {
+          if (letter.content === currentWord[index])
+            return {
+              ...letter,
+              place: 1,
+            }
+          else
+            return {
+              ...letter,
+              place: 0,
+            }
+        }
+
+        return {
+          ...letter,
+          place: -1,
+        }
+      } else if (countInTypedWord === countInCurrentWord) {
+        if (letter.content === currentWord[index])
+          return {
+            ...letter,
+            place: 1,
+          }
+        console.log({
+          letter,
+          countInCurrentWord,
+          countInTypedWord,
+        })
+
+        return {
+          ...letter,
+          place: 0,
+        }
+      } else if (indexOfLetterInTyped !== index)
+        return {
+          ...letter,
+          place: -1,
+        }
+
+      return {
+        ...letter,
+        place: 0,
+      }
+    })
+
+    setWords[selectedWord](newWord)
+  }
+
   const enterWord = () => {
     if (selectedLetter > 4 && selectedWord < 4) {
       const wordContent = words[selectedWord].map((letter) => {
@@ -97,6 +168,7 @@ function App() {
           isClosable: true,
         })
       } else {
+        checkLetterPosition()
         setSelectedWord(selectedWord + 1)
         setSelectedLetter(0)
       }
@@ -129,11 +201,11 @@ function App() {
         if (index === selectedLetter)
           return {
             content: key,
-            position: -1,
+            place: -1,
           }
         return {
           content: '',
-          position: -1,
+          place: -1,
         }
       })
 
@@ -160,6 +232,13 @@ function App() {
     return (
       <Box
         border="solid rgba(0, 0, 0, 0.4) 6px"
+        bgColor={
+          letter.place === 0
+            ? 'rgba(255, 255, 0, 0.3)'
+            : letter.place === 1
+            ? 'rgba(0, 255, 0, 0.3)'
+            : 'transparent'
+        }
         borderRadius="8px"
         borderStyle={
           selectedLetter === index && word === selectedWord ? 'groove' : 'solid'
