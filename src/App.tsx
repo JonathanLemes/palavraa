@@ -58,6 +58,12 @@ function App() {
     if (selectedLetter > 4 && selectedWord <= 4) {
       if (words[selectedWord].join('') === currentWord.toUpperCase()) {
         // Palavra correta
+      } else if (
+        !fiveLetterWords.some(
+          (word) => word.toUpperCase() === words[selectedWord].join('')
+        )
+      ) {
+        // Palavra não encontrada
       } else {
         setSelectedWord(selectedWord + 1)
         setSelectedLetter(0)
