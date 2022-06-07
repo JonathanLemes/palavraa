@@ -31,7 +31,9 @@ export default function Keyboard({ setLetter, typedLetters }: KeyboardProps) {
               : 'transparent'
           }
           borderColor={
-            letter === 'ENTER'
+            typedLetters[letter] === -1
+              ? 'gray'
+              : letter === 'ENTER'
               ? 'rgba(0, 255, 0, 0.3)'
               : letter === 'BKSPC'
               ? 'rgba(255, 0, 0, 0.5)'
