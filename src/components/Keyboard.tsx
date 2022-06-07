@@ -1,4 +1,5 @@
 import { Button, Grid, GridItem } from '@chakra-ui/react'
+import { CheckIcon } from '@chakra-ui/icons'
 
 export interface TypedLetter {
   [letter: string]: number
@@ -15,7 +16,13 @@ export default function Keyboard({ setLetter, typedLetters }: KeyboardProps) {
         <Button
           variant="outline"
           colorScheme="gray"
-          color={typedLetters[letter] === -1 ? 'gray' : 'white'}
+          color={
+            typedLetters[letter] === -1
+              ? 'gray'
+              : letter === 'BKSPC'
+              ? 'rgba(255, 0, 0, 0.5)'
+              : 'white'
+          }
           backgroundColor={
             typedLetters[letter] === 0
               ? 'rgba(255, 255, 0, 0.3)'
@@ -23,23 +30,29 @@ export default function Keyboard({ setLetter, typedLetters }: KeyboardProps) {
               ? 'rgba(0, 255, 0, 0.3)'
               : 'transparent'
           }
+          borderColor={
+            letter === 'ENTER'
+              ? 'rgba(0, 255, 0, 0.3)'
+              : letter === 'BKSPC'
+              ? 'rgba(255, 0, 0, 0.5)'
+              : 'white'
+          }
           fontWeight="bold"
           marginBottom="4px"
-          width="100%"
           onClick={() => setLetter(letter)}
         >
-          {letter}
+          {letter === 'ENTER' ? (
+            <CheckIcon color="rgba(0, 255, 0, 0.3)" />
+          ) : (
+            letter
+          )}
         </Button>
       </GridItem>
     )
   }
 
   return (
-    <Grid
-      gap={2}
-      templateColumns="repeat(12, 1fr)"
-      templateRows="repeat(3, 1fr)"
-    >
+    <Grid templateColumns="repeat(12, 1fr)" templateRows="repeat(3, 1fr)">
       <GridItem />
       {keyBoardLetter('Q')}
       {keyBoardLetter('W')}

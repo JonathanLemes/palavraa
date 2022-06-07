@@ -337,10 +337,9 @@ function App() {
         <Flex
           justifyContent="center"
           alignItems="center"
-          minWidth="320px"
           height="calc(100vh - 270px)"
         >
-          <SimpleGrid width="max(320px, 70%)" columns={6}>
+          <SimpleGrid width="max(320px, 80%)" columns={6}>
             {firstWord.map((letter, index) => letterBox(letter, index, 0))}
             {secondWord.map((letter, index) => letterBox(letter, index, 1))}
             {thirdWord.map((letter, index) => letterBox(letter, index, 2))}
@@ -350,7 +349,7 @@ function App() {
             {seventhWord.map((letter, index) => letterBox(letter, index, 6))}
           </SimpleGrid>
         </Flex>
-        <Flex height="150px">
+        <Flex height="150px" maxWidth="500px">
           <Keyboard typedLetters={typedLetters} setLetter={setLetter} />
         </Flex>
       </Flex>
