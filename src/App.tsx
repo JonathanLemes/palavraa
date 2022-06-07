@@ -18,17 +18,14 @@ interface Letter {
   place: number
 }
 
+const LETTERS_AMOUNT = 6
+
 const letterInitialState = {
   content: '',
   place: -1,
 }
-const wordInitialState = [
-  letterInitialState,
-  letterInitialState,
-  letterInitialState,
-  letterInitialState,
-  letterInitialState,
-]
+
+const wordInitialState = Array(LETTERS_AMOUNT).fill(letterInitialState)
 
 function App() {
   const [currentWord, setCurrentWord] = useState<string>('')
@@ -39,6 +36,8 @@ function App() {
   const [thirdWord, setThirdWord] = useState<Letter[]>(wordInitialState)
   const [fourthWord, setFourthWord] = useState<Letter[]>(wordInitialState)
   const [fifthWord, setFifthWord] = useState<Letter[]>(wordInitialState)
+  const [sixthWord, setSixthWord] = useState<Letter[]>(wordInitialState)
+  const [seventhWord, setSeventhWord] = useState<Letter[]>(wordInitialState)
 
   const toast = useToast()
 
@@ -48,6 +47,8 @@ function App() {
     2: thirdWord,
     3: fourthWord,
     4: fifthWord,
+    5: sixthWord,
+    6: seventhWord,
   }
 
   const setWords: SetWord = {
@@ -56,6 +57,8 @@ function App() {
     2: setThirdWord,
     3: setFourthWord,
     4: setFifthWord,
+    5: setSixthWord,
+    6: setSeventhWord,
   }
 
   const removeLetter = () => {
@@ -117,6 +120,12 @@ function App() {
           ...letter,
           place: 0,
         }
+      } else if (countInTypedWord < countInCurrentWord) {
+        if (letter.content === currentWord[index])
+          return {
+            ...letter,
+            place: 1,
+          }
       } else if (indexOfLetterInTyped !== index)
         return {
           ...letter,
@@ -138,7 +147,7 @@ function App() {
         return letter.content
       })
       .join('')
-    if (wordContent.length < 5) {
+    if (wordContent.length < LETTERS_AMOUNT) {
       return toast({
         title: 'Palavra incompleta',
         description: 'A palavra deve possuir cinco letras',
@@ -156,7 +165,7 @@ function App() {
         isClosable: true,
       })
     } else {
-      if (selectedLetter > 4) {
+      if (selectedLetter > LETTERS_AMOUNT - 1) {
         if (wordContent === currentWord) {
           const newWord = words[selectedWord].map((letter) => {
             return {
@@ -172,7 +181,7 @@ function App() {
             status: 'success',
             isClosable: true,
           })
-        } else if (selectedWord === 4) {
+        } else if (selectedWord === LETTERS_AMOUNT) {
           const newWord = words[selectedWord].map((letter) => {
             return {
               ...letter,
@@ -200,7 +209,7 @@ function App() {
     (key: string) => {
       if (key === 'BKSPC' || key === 'BACKSPACE') return removeLetter()
       if (key === 'ENTER') return enterWord()
-      if (selectedLetter > 4) return
+      if (selectedLetter > LETTERS_AMOUNT - 1) return
 
       const typedWord = words[selectedWord]
       const newWord = typedWord.map((letter, index) => {
@@ -217,7 +226,8 @@ function App() {
       })
 
       setWords[selectedWord](newWord)
-      if (selectedLetter <= 4) setSelectedLetter(selectedLetter + 1)
+      if (selectedLetter <= LETTERS_AMOUNT - 1)
+        setSelectedLetter(selectedLetter + 1)
     },
     [selectedLetter, selectedWord]
   )
@@ -303,18 +313,22 @@ function App() {
         <Flex
           justifyContent="center"
           alignItems="center"
-          height="calc(100vh - 370px)"
           minWidth="320px"
+          height="calc(100vh - 270px)"
         >
-          <SimpleGrid width="max(320px, 70%)" columns={5} maxHeight="380px">
+          <SimpleGrid width="max(320px, 70%)" columns={6}>
             {firstWord.map((letter, index) => letterBox(letter, index, 0))}
             {secondWord.map((letter, index) => letterBox(letter, index, 1))}
             {thirdWord.map((letter, index) => letterBox(letter, index, 2))}
             {fourthWord.map((letter, index) => letterBox(letter, index, 3))}
             {fifthWord.map((letter, index) => letterBox(letter, index, 4))}
+            {sixthWord.map((letter, index) => letterBox(letter, index, 5))}
+            {seventhWord.map((letter, index) => letterBox(letter, index, 6))}
           </SimpleGrid>
         </Flex>
-        <Keyboard setLetter={setLetter} />
+        <Flex height="150px">
+          <Keyboard setLetter={setLetter} />
+        </Flex>
       </Flex>
     </Flex>
   )
