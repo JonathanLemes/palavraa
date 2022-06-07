@@ -336,7 +336,7 @@ function App() {
         <Flex
           justifyContent="center"
           alignItems="center"
-          height="calc(100vh - 160px)"
+          height="min(980px, 75%)"
         >
           <SimpleGrid width="max(320px, 90%)" columns={6}>
             {firstWord.map((letter, index) => letterBox(letter, index, 0))}
