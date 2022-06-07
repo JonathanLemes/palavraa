@@ -177,6 +177,7 @@ function App() {
         description: 'A palavra deve possuir cinco letras',
         status: 'warning',
         isClosable: true,
+        position: 'top',
       })
     }
 
@@ -187,6 +188,7 @@ function App() {
           'A palavra não foi encontrada na lista de palavras válidas',
         status: 'warning',
         isClosable: true,
+        position: 'top',
       })
     } else {
       if (selectedLetter > LETTERS_AMOUNT - 1) {
@@ -204,6 +206,7 @@ function App() {
             description: 'Atualize a página para jogar com uma palavra nova',
             status: 'success',
             isClosable: true,
+            position: 'top',
           })
         } else if (selectedWord === LETTERS_AMOUNT) {
           const newWord = words[selectedWord].map((letter) => {
@@ -219,6 +222,7 @@ function App() {
             description: `A palavra correta era ${currentWord}. Atualize a página para jogar com uma palavra nova`,
             status: 'error',
             isClosable: true,
+            position: 'top',
           })
         } else {
           checkLetterPosition()
