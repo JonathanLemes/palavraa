@@ -288,9 +288,9 @@ function App() {
           selectedLetter === index && word === selectedWord ? 'groove' : 'solid'
         }
         key={index}
-        m="8px"
-        height="64px"
-        width="64px"
+        m="4px"
+        height="58px"
+        width="58px"
       >
         <Text
           display="flex"
@@ -299,7 +299,7 @@ function App() {
           fontWeight="bold"
           height="100%"
           color="white"
-          fontSize="4xl"
+          fontSize="3xl"
           textAlign="center"
         >
           {letter.content}
@@ -333,13 +333,12 @@ function App() {
       height="100vh"
     >
       <Flex flexDirection="column" height="100vh" maxWidth="720px">
-        <Flex height="120px"></Flex>
         <Flex
           justifyContent="center"
           alignItems="center"
-          height="calc(100vh - 270px)"
+          height="calc(100vh - 160px)"
         >
-          <SimpleGrid width="max(320px, 80%)" columns={6}>
+          <SimpleGrid width="max(320px, 90%)" columns={6}>
             {firstWord.map((letter, index) => letterBox(letter, index, 0))}
             {secondWord.map((letter, index) => letterBox(letter, index, 1))}
             {thirdWord.map((letter, index) => letterBox(letter, index, 2))}

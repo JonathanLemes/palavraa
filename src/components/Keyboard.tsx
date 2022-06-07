@@ -40,7 +40,7 @@ export default function Keyboard({ setLetter, typedLetters }: KeyboardProps) {
               : 'white'
           }
           fontWeight="bold"
-          marginBottom="4px"
+          width={letter === 'BKSPC' ? '68px' : '34px'}
           onClick={() => setLetter(letter)}
         >
           {letter === 'ENTER' ? (
@@ -54,8 +54,7 @@ export default function Keyboard({ setLetter, typedLetters }: KeyboardProps) {
   }
 
   return (
-    <Grid templateColumns="repeat(12, 1fr)" templateRows="repeat(3, 1fr)">
-      <GridItem />
+    <Grid templateColumns="repeat(10, 1fr)" templateRows="repeat(3, 1fr)">
       {keyBoardLetter('Q')}
       {keyBoardLetter('W')}
       {keyBoardLetter('E')}
@@ -67,8 +66,6 @@ export default function Keyboard({ setLetter, typedLetters }: KeyboardProps) {
       {keyBoardLetter('O')}
       {keyBoardLetter('P')}
       <GridItem />
-      <GridItem />
-      <GridItem />
       {keyBoardLetter('A')}
       {keyBoardLetter('S')}
       {keyBoardLetter('D')}
@@ -78,8 +75,6 @@ export default function Keyboard({ setLetter, typedLetters }: KeyboardProps) {
       {keyBoardLetter('J')}
       {keyBoardLetter('K')}
       {keyBoardLetter('L')}
-      <GridItem />
-      <GridItem />
       {keyBoardLetter('BKSPC', 2)}
       {keyBoardLetter('Z')}
       {keyBoardLetter('X')}
@@ -88,7 +83,7 @@ export default function Keyboard({ setLetter, typedLetters }: KeyboardProps) {
       {keyBoardLetter('B')}
       {keyBoardLetter('N')}
       {keyBoardLetter('M')}
-      {keyBoardLetter('ENTER', 2)}
+      {keyBoardLetter('ENTER')}
     </Grid>
   )
 }
