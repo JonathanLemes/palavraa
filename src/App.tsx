@@ -174,7 +174,7 @@ function App() {
     if (wordContent.length < LETTERS_AMOUNT) {
       return toast({
         title: 'Palavra incompleta',
-        description: 'A palavra deve possuir cinco letras',
+        description: 'A palavra deve possuir seis letras',
         status: 'warning',
         isClosable: true,
         position: 'top',
