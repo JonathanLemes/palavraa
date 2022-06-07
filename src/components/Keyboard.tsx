@@ -1,17 +1,28 @@
 import { Button, Grid, GridItem } from '@chakra-ui/react'
 
+export interface TypedLetter {
+  [letter: string]: number
+}
 interface KeyboardProps {
+  typedLetters: TypedLetter
   setLetter: (key: string) => void
 }
 
-export default function Keyboard({ setLetter }: KeyboardProps) {
+export default function Keyboard({ setLetter, typedLetters }: KeyboardProps) {
   const keyBoardLetter = (letter: string, colSpan?: number) => {
     return (
       <GridItem colSpan={colSpan || 1}>
         <Button
           variant="outline"
           colorScheme="gray"
-          color="white"
+          color={typedLetters[letter] === -1 ? 'gray' : 'white'}
+          backgroundColor={
+            typedLetters[letter] === 0
+              ? 'rgba(255, 255, 0, 0.3)'
+              : typedLetters[letter] === 1
+              ? 'rgba(0, 255, 0, 0.3)'
+              : 'transparent'
+          }
           fontWeight="bold"
           marginBottom="4px"
           width="100%"

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import './App.css'
 import { Flex, SimpleGrid, Box, Text, useToast } from '@chakra-ui/react'
 
-import Keyboard from './components/Keyboard'
+import Keyboard, { TypedLetter } from './components/Keyboard'
 
 import { words as fiveLetterWords } from './constants/words'
 
@@ -31,6 +31,7 @@ function App() {
   const [currentWord, setCurrentWord] = useState<string>('')
   const [selectedLetter, setSelectedLetter] = useState<number>(0)
   const [selectedWord, setSelectedWord] = useState<number>(0)
+  const [typedLetters, setTypedLetters] = useState<TypedLetter>({})
   const [firstWord, setFirstWord] = useState<Letter[]>(wordInitialState)
   const [secondWord, setSecondWord] = useState<Letter[]>(wordInitialState)
   const [thirdWord, setThirdWord] = useState<Letter[]>(wordInitialState)
@@ -71,6 +72,15 @@ function App() {
     }
   }
 
+  const addLetterToHistory = (letter: string, place: number) => {
+    const auxTypedLetters = typedLetters
+
+    if (typedLetters[letter] === undefined || typedLetters[letter] < place) {
+      auxTypedLetters[letter] = place
+      setTypedLetters(auxTypedLetters)
+    }
+  }
+
   const checkLetterPosition = () => {
     const typedWord = words[selectedWord]
       .map((letter) => {
@@ -78,60 +88,74 @@ function App() {
       })
       .join('')
 
-    const newWord = words[selectedWord].map((letter, index) => {
+    const newWord = words[selectedWord].map((letter: Letter, index) => {
       const indexOfLetterInCurrent = currentWord.indexOf(letter.content) // Check if letter exists in current word
       const indexOfLetterInTyped = typedWord.indexOf(letter.content)
 
-      if (indexOfLetterInCurrent === -1)
+      if (indexOfLetterInCurrent === -1) {
+        addLetterToHistory(letter.content, -1)
         return {
           ...letter,
           place: indexOfLetterInCurrent,
         }
+      }
 
       const countInCurrentWord = currentWord.split(letter.content).length - 1 // Check how many times the letter shows up in current word
       const countInTypedWord = typedWord.split(letter.content).length - 1 // Check how many times the letter shows up in typed word
 
       if (countInTypedWord > countInCurrentWord) {
         if (indexOfLetterInTyped === index) {
-          if (letter.content === currentWord[index])
+          if (letter.content === currentWord[index]) {
+            addLetterToHistory(letter.content, 1)
             return {
               ...letter,
               place: 1,
             }
-          else
+          } else {
+            addLetterToHistory(letter.content, 0)
             return {
               ...letter,
               place: 0,
             }
+          }
         }
 
+        addLetterToHistory(letter.content, -1)
         return {
           ...letter,
           place: -1,
         }
       } else if (countInTypedWord === countInCurrentWord) {
-        if (letter.content === currentWord[index])
+        if (letter.content === currentWord[index]) {
+          addLetterToHistory(letter.content, 1)
           return {
             ...letter,
             place: 1,
           }
+        }
 
+        addLetterToHistory(letter.content, 0)
         return {
           ...letter,
           place: 0,
         }
       } else if (countInTypedWord < countInCurrentWord) {
-        if (letter.content === currentWord[index])
+        if (letter.content === currentWord[index]) {
+          addLetterToHistory(letter.content, 1)
           return {
             ...letter,
             place: 1,
           }
-      } else if (indexOfLetterInTyped !== index)
+        }
+      } else if (indexOfLetterInTyped !== index) {
+        addLetterToHistory(letter.content, -1)
         return {
           ...letter,
           place: -1,
         }
+      }
 
+      addLetterToHistory(letter.content, 0)
       return {
         ...letter,
         place: 0,
@@ -327,7 +351,7 @@ function App() {
           </SimpleGrid>
         </Flex>
         <Flex height="150px">
-          <Keyboard setLetter={setLetter} />
+          <Keyboard typedLetters={typedLetters} setLetter={setLetter} />
         </Flex>
       </Flex>
     </Flex>
